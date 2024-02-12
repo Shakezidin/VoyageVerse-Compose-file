@@ -1,0 +1,149 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Sinu1090.
+      POSTGRES_DATABASE: package,postgres:users,postgres:admin
+    ports:
+      - "5432:5432"
+    networks:
+      - voyageverse-network
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: Sinu1090.
+    ports:
+      - "6379:6379"
+    networks:
+      - voyageverse-network
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672" 
+    networks:
+      - voyageverse-network
+
+  api-service:
+    image: shakezidhin/apiservice:v1
+    container_name: api-service
+    restart: unless-stopped
+    depends_on: 
+      - coordinator-service
+      - user-service
+      - admin-service
+    ports:
+      - "7070:7070"
+    environment:
+      APIPORT: 7070
+      GRPCUSERPORT: user-service:9090
+      GRPCADMINPORT: admin-service:8080
+      GRPCCORDINATORPORT: coordinator-service:7000
+    networks:
+     - voyageverse-network
+
+  coordinator-service:
+    image: shakezidhin/coordinatorservice:v1
+    container_name: coordinator-service
+    restart: unless-stopped
+    depends_on:
+     - user-service
+     - admin-service
+     - postgres
+     - redis
+     - rabbitmq
+     - message-service
+    ports:
+      - "7000:7000"
+    environment:
+      HOST               : postgres
+      USER               : postgres
+      PASSWORD           : Sinu1090.
+      DATABASE           : package
+      PORT               : 5432
+      SSLMODE            : disable
+      GRPCCOORDINATORPORT: 7000 
+      SECRETKEY          : SECRETKEY
+      SERVICETOKEN       : VAeec6f3e70888fce479face12565b9806
+      TOKEN              : 294abc667353fafa58aeacdb0d5b6ad5
+      SID                : ACcd2df40915ca88da258f446f2beb5b04
+      REDISHOST          : redis:6379
+      RAZORPAYKEYID      : rzp_test_6DiNSqmqYDXEQo
+      RAZORPAYSECRETKEY  : fs9rhgqbLu16ahD3keuBbr8M
+      GRPCADMINPORT      : admin-service:8080
+    networks:
+     - voyageverse-network
+
+  user-service:
+    image: shakezidhin/userservice:v1
+    container_name: user-service
+    restart: unless-stopped
+    depends_on:
+     - admin-service
+     - postgres
+    ports:
+      - "9090:9090"
+    environment:
+      HOST               : postgres
+      USER               : postgres
+      PASSWORD           : Sinu1090.
+      DATABASE           : users
+      PORT               : 5432
+      SSLMODE            : disable
+      GRPCCORDINATORPORT : coordinator-service:7000 
+      GRPCUSERPORT       : 9090
+      SECRETKEY          : SECRETKEY
+      SERVICETOKEN       : VAeec6f3e70888fce479face12565b9806
+      TOKEN              : 294abc667353fafa58aeacdb0d5b6ad5
+      SID                : ACcd2df40915ca88da258f446f2beb5b04
+      REDISHOST          : redis:6379
+    networks:
+     - voyageverse-network
+
+  admin-service:
+    image: shakezidhin/adminservice:v1
+    container_name: admin-service
+    restart: unless-stopped
+    depends_on:
+     - postgres
+    ports:
+     - "8080:8080"
+    environment:
+      HOST             : postgres
+      USER             : postgres
+      PASSWORD         : Sinu1090.
+      DATABASE         : admin
+      PORT             : 5432
+      SSLMODE          : disable
+      GRPCADMINPORT    : 8080
+      COORDINATORAPORT : coordinator-service:7000
+      USERPORT         : user-service:9090
+    networks:
+     - voyageverse-network
+
+  message-service:
+    image: shakezidhin/messageservice:v1
+    container_name: message-service
+    depends_on:
+     - rabbitmq
+    environment:
+      RABBITMQ_HOST: rabbitmq       
+      RABBITMQ_USER: guest     
+      RABBITMQ_PASS: guest
+      EMAIL        : sinuzidin@gmail.com
+      PASSWORD     : "pqpzallmsndjrbvj "
+      PORT         : 5672 
+
+networks:
+  voyageverse-network:
+    driver: bridge
