@@ -8,18 +8,20 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Sinu1090.
-      POSTGRES_DATABASE: package,postgres:users,postgres:admin
+      POSTGRES_DB: package
     ports:
       - "5432:5432"
     networks:
       - voyageverse-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: redis
     container_name: redis
     restart: unless-stopped
     environment:
-      REDIS_PASSWORD: Sinu1090.
+      REDIS_PASSWORD: "Sinu1090."
     ports:
       - "6379:6379"
     networks:
@@ -75,7 +77,7 @@ services:
       GRPCCOORDINATORPORT: 7000 
       SECRETKEY          : SECRETKEY
       SERVICETOKEN       : VAeec6f3e70888fce479face12565b9806
-      TOKEN              : 294abc667353fafa58aeacdb0d5b6ad5
+      TOKEN              : 6deedfef269a0b769522f00803f8384f
       SID                : ACcd2df40915ca88da258f446f2beb5b04
       REDISHOST          : redis:6379
       RAZORPAYKEYID      : rzp_test_6DiNSqmqYDXEQo
@@ -104,7 +106,7 @@ services:
       GRPCUSERPORT       : 9090
       SECRETKEY          : SECRETKEY
       SERVICETOKEN       : VAeec6f3e70888fce479face12565b9806
-      TOKEN              : 294abc667353fafa58aeacdb0d5b6ad5
+      TOKEN              : 6deedfef269a0b769522f00803f8384f
       SID                : ACcd2df40915ca88da258f446f2beb5b04
       REDISHOST          : redis:6379
     networks:
@@ -147,3 +149,6 @@ services:
 networks:
   voyageverse-network:
     driver: bridge
+  
+volumes:
+  postgres_data:
