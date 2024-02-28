@@ -1,0 +1,30 @@
+[submodule "path-to-submodules/voyageverse-API-gateway"]
+	path = path-to-submodules/voyageverse-API-gateway
+	url = https://github.com/Shakezidin/PackageBook_API
+[submodule "path-to-submodules/voyageverse-user-service"]
+	path = path-to-submodules/voyageverse-user-service
+	url = https://github.com/Shakezidin/User_Service
+[submodule "path-to-submodules/voyageverse-coordinator-service"]
+	path = path-to-submodules/voyageverse-coordinator-service
+	url = https://github.com/Shakezidin/Coordinator-service
+[submodule "path-to-submodules/voyageverse-admin-service"]
+	path = path-to-submodules/voyageverse-admin-service
+	url = https://github.com/Shakezidin/Admin_Service
+[submodule "path-to-submodules/voyageverse-Message-service"]
+	path = path-to-submodules/voyageverse-Message-service
+	url = https://github.com/Shakezidin/PackageBook_MessageService
+[submodule "PackageBook_MessageService"]
+	path = PackageBook_MessageService
+	url = https://github.com/Shakezidin/PackageBook_MessageService.git
+[submodule "Admin_Service"]
+	path = Admin_Service
+	url = https://github.com/Shakezidin/Admin_Service.git
+[submodule "Coordinator-service"]
+	path = Coordinator-service
+	url = https://github.com/Shakezidin/Coordinator-service.git
+[submodule "User_Service"]
+	path = User_Service
+	url = https://github.com/Shakezidin/User_Service.git
+[submodule "PackageBook_API"]
+	path = PackageBook_API
+	url = https://github.com/Shakezidin/PackageBook_API.git
